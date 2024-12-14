@@ -14,7 +14,15 @@ body{
     background-color: #000;
 	overflow: hidden;
 }
-
+.snowflake {
+    user-select: none;
+    pointer-events: none;
+    z-index: 9999;
+    color: #FFFAFA;
+    font-weight: bold;
+    white-space: nowrap;
+	font-family: 'Audiowide', cursive;
+}
 .main{
 	 
     width: 100%;
