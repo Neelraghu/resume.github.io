@@ -307,7 +307,9 @@ text-decoration: none;
     height: 60px;
     top: -29px;
  }
-   
+   .btn-p {
+    margin-top: 2rem;
+   }
 }
 
 
