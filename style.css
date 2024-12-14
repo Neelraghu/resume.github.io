@@ -19,6 +19,20 @@ body{
     white-space: nowrap;
 	font-family: "Fruktur", system-ui;
 }
+.santa {
+	position: absolute;
+	bottom: -25px;
+	width: 150px;
+	animation: walk 10s linear infinite;
+}
+@keyframes walk {
+	from {
+	right: -200px;
+	}
+	to {
+	right: 100vw;
+	}
+}
 .main{
 	 
     width: 100%;
