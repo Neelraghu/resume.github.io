@@ -262,10 +262,9 @@ text-decoration: none;
     
     #myphotos{
         display: block;
-        width: 120%;
+        width: 100%;
         border-radius: 50px;
         box-shadow:inset 0 0 100px #000;
-        margin-bottom: -250px;
     }
 
     .name{
