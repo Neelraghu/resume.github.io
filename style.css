@@ -324,7 +324,9 @@ text-decoration: none;
 
 
 @media only screen and (max-width:500px){
-
+.snowflake{
+	display: none;	
+}
     .text span{
         font-size: 30px;
     }
@@ -367,24 +369,13 @@ text-decoration: none;
     }
    
 }
-@media only screen and (width:375px) and (height:812px){
 
-
-    .text span{
-        font-size: 28px;
-    }
-    .social i{
-        font-size: 17px;
-        margin: 0 5px;
-    }
-   
-}
 
 
 @media only screen and (max-width:320px){
 
     .name{
-        font-size:38px;
+        font-size:33px;
         font-weight: 400;
         font-family: "Fruktur", system-ui;
         text-shadow: 0px 1px 1px rgba(12, 11, 11, 0.56);
