@@ -1,8 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fruktur:ital@0;1&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@800&display=swap');
-
-
-
+@import url('https://fonts.googleapis.com/css2?family=Fruktur:ital@0;1&family=Mountains+of+Christmas:wght@400;700&display=swap');
 
 *{
     margin: 0;
@@ -21,7 +17,7 @@ body{
     color: #FFFAFA;
     font-weight: bold;
     white-space: nowrap;
-	font-family: 'Audiowide', cursive;
+	font-family: "Fruktur", system-ui;
 }
 .main{
 	 
@@ -112,7 +108,7 @@ text-decoration: none;
     font-size:68px;
 	font-weight: 600;
     letter-spacing: 0.1em;
-	font-family: Galada;
+	font-family: "Mountains of Christmas", serif;
 }
 
     
@@ -238,7 +234,7 @@ text-decoration: none;
     .name{
         font-size:38px;
         font-weight: 400;
-        font-family: 'Audiowide', cursive;
+        font-family: "Fruktur", system-ui;
         text-shadow: 0px 1px 1px rgba(12, 11, 11, 0.56);
         color: white;
     }
