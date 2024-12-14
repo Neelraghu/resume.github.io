@@ -208,8 +208,11 @@ text-decoration: none;
 	.right,
 	.left{
     width: 100%;
-		height: auto;
+		height: 100%;
 	}
+	#myphoto {
+    width: auto;
+}
 
 }
 
