@@ -48,186 +48,62 @@
 </div>
 </body>
 <script>
-    const container = document.getElementById('snow-container');
-const snowBuildUpCanvas = document.getElementById('snow-build-up');
-const ctx = snowBuildUpCanvas.getContext('2d');
-const snowflakes = [];
+   document.addEventListener("DOMContentLoaded", function () {
+  const currentDate = new Date();
+  const startSnowfallDate = new Date(currentDate.getFullYear(), 10, 1); // Noviembre 1
+  const endSnowfallDate = new Date(currentDate.getFullYear() + 1, 0, 6); // Enero 6 del próximo año
 
-snowBuildUpCanvas.width = container.offsetWidth;
-snowBuildUpCanvas.height = container.offsetHeight;
+  if (currentDate >= startSnowfallDate && currentDate <= endSnowfallDate) {
+    const maxFlakes = 50; // Número máximo de copos de nieve en pantalla
+    const flakes = [];
+    const snowflakeCharacters = ["❅", "❄", "❆",]; // Diferentes caracteres de copos
 
-const snowLevels = new Array(snowBuildUpCanvas.width).fill(0);
-const maxSnowDepth = 80; // Limit snow depth to 100px
-
-const snowflakeCharacters = ['❄', '*', '❉', '❃', '❅'];
-
-let snowflakeCounter = 0; // Counter to throttle snowflake creation
-let snowflakeCreationRate;
-let isMelting = false; // Flag for melting phase
-
-// Determine creation rate based on screen size
-if (window.innerWidth > 768) {
-  snowflakeCreationRate = 1; // More snowflakes on desktop
-} else {
-  snowflakeCreationRate = 8; // Fewer snowflakes on mobile
-}
-
-let lastFrameTime = performance.now();
-
-function createSnowflake() {
-  const snowflake = {
-    x: Math.random() * snowBuildUpCanvas.width,
-    y: -10,
-    size: Math.random() * 20 + 10, // Adjust size to make the symbols more visible
-    speed: Math.random() * 2 + 1,
-    opacity: 1, // Initial opacity
-    character: snowflakeCharacters[Math.floor(Math.random() * snowflakeCharacters.length)] // Random snowflake character
-  };
-  snowflakes.push(snowflake);
-}
-
-function smoothAccumulation() {
-  // Smooth out the snow accumulation over time by averaging snow levels
-  for (let i = 1; i < snowLevels.length - 1; i++) {
-    snowLevels[i] = (snowLevels[i - 1] + snowLevels[i] + snowLevels[i + 1]) / 3;
-  }
-}
-
-function drawSnowflakes(deltaTime) {
-  ctx.clearRect(0, 0, snowBuildUpCanvas.width, snowBuildUpCanvas.height);
-
-  // Draw buildup
-  ctx.fillStyle = 'white';
-  for (let x = 0; x < snowLevels.length; x++) {
-    ctx.fillRect(x, snowBuildUpCanvas.height - snowLevels[x], 1, snowLevels[x]);
-  }
-
-  // Draw falling snowflakes
-  ctx.fillStyle = 'white';
-  snowflakes.forEach((snowflake, index) => {
-    ctx.globalAlpha = snowflake.opacity; // Apply opacity to the snowflake
-    ctx.font = `${snowflake.size}px sans-serif`; // Set the font size for the snowflake character
-    ctx.fillText(snowflake.character, snowflake.x, snowflake.y); // Draw the snowflake character
-    ctx.globalAlpha = 1; // Reset alpha
-
-    if (!isMelting) {
-      snowflake.y += snowflake.speed * deltaTime * 60; // Adjust speed by deltaTime
-    } else {
-      snowflake.speed *= 0.98; // Slow down snowflake
-      snowflake.opacity *= 0.98; // Fade out snowflake
-    }
-
-    // If snowflake reaches the bottom, accumulate snow
-    if (
-      snowflake.y + snowflake.size / 2 >=
-      snowBuildUpCanvas.height - snowLevels[Math.floor(snowflake.x)]
-    ) {
-      if (!isMelting) {
-        const snowflakeX = Math.floor(snowflake.x);
-        const snowflakeSize = snowflake.size / 2;
-
-        // Accumulate snow more smoothly across a range with a weighted falloff effect
-        const accumulationWidth = Math.ceil(snowflakeSize * 2);
-        for (let i = -accumulationWidth; i <= accumulationWidth; i++) {
-          const xIndex = Math.min(Math.max(snowflakeX + i, 0), snowLevels.length - 1);
-          const distance = Math.abs(i); // The distance from the center of the snowflake
-          const falloff = Math.exp(-distance / 5); // Gaussian falloff (smooth transition)
-
-          // Apply the falloff to the accumulation to smooth the edges
-          if (snowLevels[xIndex] < maxSnowDepth) {
-            snowLevels[xIndex] += snowflake.size / 4 * falloff; // Quicker accumulation with smoothing
-          }
-        }
-
-        // Remove snowflake once it lands
-        snowflakes.splice(index, 1);
+    setInterval(() => {
+      if (flakes.length < maxFlakes) {
+        createSnowflake();
       }
-    }
-  });
+    }, 300);
 
-  // Apply smoothing after every update
-  smoothAccumulation();
-}
+    function createSnowflake() {
+      const snowflake = document.createElement("div");
+      snowflake.className = "snowflake";
 
-function meltSnow() {
-  let allMelted = true;
-  for (let i = 0; i < snowLevels.length; i++) {
-    if (snowLevels[i] > 0) {
-      const meltRate = Math.random() * 0.3 + 0.1; // Varying melt rates for uneven melting
-      snowLevels[i] -= meltRate; // Melt snow gradually
-      if (snowLevels[i] < 0) snowLevels[i] = 0; // Prevent negative values
-      allMelted = false;
-    }
-  }
+      // Seleccionar un carácter aleatorio de la matriz
+      const randomChar = snowflakeCharacters[Math.floor(Math.random() * snowflakeCharacters.length)];
+      snowflake.innerHTML = randomChar;
 
-  // Introduce additional random offsets to simulate flow and uneven melting
-  for (let i = 0; i < snowLevels.length; i++) {
-    if (i > 0 && i < snowLevels.length - 1) {
-      const leftNeighbor = snowLevels[i - 1];
-      const rightNeighbor = snowLevels[i + 1];
-      const average = (leftNeighbor + rightNeighbor) / 2;
+      document.body.appendChild(snowflake);
+      flakes.push(snowflake);
 
-      // Adjust current level slightly toward the average of neighbors
-      const adjustment = (average - snowLevels[i]) * 0.2;
-      snowLevels[i] += adjustment;
-    }
-  }
+      const startPos = Math.random() * window.innerWidth;
+      const startOpacity = Math.random();
+      const duration = Math.random() * 3 + 5;
+      const size = Math.random() * 20 + 10; // Tamaño aleatorio
 
-  return allMelted;
-}
+      snowflake.style.fontSize = `${size}px`;
+      snowflake.style.opacity = startOpacity;
+      snowflake.style.position = "fixed"; // Ajustado a posición fija
+      snowflake.style.top = "0";
+      snowflake.style.left = `${startPos}px`;
 
-function checkFullSnow() {
-  return snowLevels.every(level => level >= maxSnowDepth);
-}
+      // Elegir dirección de rotación aleatoriamente
+      const rotationDirection = Math.random() > 0.5 ? 1 : -1; // 1 para horario, -1 para antihorario
 
-function animate() {
-  const currentTime = performance.now();
-  const deltaTime = (currentTime - lastFrameTime) / 1000; // Time elapsed in seconds
-  lastFrameTime = currentTime;
-
-  if (!isMelting) {
-    if (checkFullSnow()) {
-      isMelting = true; // Start melting phase
-    } else if (snowflakeCounter % snowflakeCreationRate === 0) {
-      createSnowflake();
-    }
-    snowflakeCounter++;
-  } else {
-    if (meltSnow()) {
-      // Reset state when snow is fully melted
-      snowflakes.length = 0; // Clear all snowflakes
-      snowLevels.fill(0); // Reset snow levels
-      isMelting = false;
+      snowflake.animate(
+        [
+          { transform: `translate(0, 0) rotate(0deg)` },
+          { transform: `translate(0, 100vh) rotate(${rotationDirection * 360}deg)` }
+        ],
+        {
+          duration: duration * 1000,
+          easing: "linear",
+          iterations: Infinity
+        }
+      );
     }
   }
+});
 
-  drawSnowflakes(deltaTime);
-  requestAnimationFrame(animate);
-}
-
-animate();
 </script>
-    <style>
-        #snow-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .snowflake {
-            position: absolute;
-            color: white;
-            font-size: 20px;
-            opacity: 0.8;
-        }
-
-        .snow-build-up {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: white;
-            transition: all 0.1s;
-        }
-        </style>
+ 
 </html>
