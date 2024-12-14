@@ -144,6 +144,7 @@ text-decoration: none;
 }
 
 .btn-p { 
+    margin-top: 3rem;	
     padding: 0.7em 2em;
     cursor: pointer;
     text-align: center;
