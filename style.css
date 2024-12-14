@@ -202,7 +202,8 @@ text-decoration: none;
 	margin-left:100px;
 	margin-top: 50px;
     }
-	.right {
+	.right,
+	.left{
     width: 100%;
 	}
 
